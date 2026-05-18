@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #030306;
+  color: #c8c8d8;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typography ── */
+.display-font {
+  font-family: 'Black Ops One', 'Impact', sans-serif;
+  letter-spacing: 0.04em;
+}
+.rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* ── Angular card clip-path ── */
+.hd-card {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% 100%,
+    14px 100%,
+    0 calc(100% - 14px)
+  );
+}
+
+/* Wrapper carries the drop-shadow glow (clip-path kills box-shadow) */
+.hd-card-wrapper {
+  transition: filter 0.3s ease;
+}
+
+/* ── Diagonal stripe background texture ── */
+.stripe-bg {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 215, 0, 0.025) 10px,
+    rgba(255, 215, 0, 0.025) 20px
+  );
+}
+
+/* Tactical dot-grid bg */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255, 215, 0, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Scanline overlay ── */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.12) 3px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── Corner bracket decorations ── */
+.bracket-tl::before,
+.bracket-tl::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--bracket-color, #FFD700);
+  border-style: solid;
+  pointer-events: none;
+}
+.bracket-tl::before {
+  top: 6px; left: 6px;
+  border-width: 2px 0 0 2px;
+}
+.bracket-tl::after {
+  bottom: 6px; right: 6px;
+  border-width: 0 2px 2px 0;
+}
+
+/* ── Tier badge diagonal shape ── */
+.tier-badge {
+  clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+/* ── Animations ── */
+
+/* S+ tier continuous pulse */
+@keyframes spGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(255, 34, 68, 0.7));
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(255, 34, 68, 1)) drop-shadow(0 0 36px rgba(255, 34, 68, 0.4));
+  }
+}
+
+/* S tier pulse */
+@keyframes sGlow {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 107, 0, 0.6)); }
+  50%       { filter: drop-shadow(0 0 14px rgba(255, 107, 0, 0.9)); }
+}
+
+/* Blinking cursor / status dot */
+@keyframes blink {
+  0%, 49%  { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Status indicator pulse */
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.3; transform: scale(0.75); }
+}
+
+/* Scanning line sweep across header */
+@keyframes scanSweep {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+
+/* Subtle header flicker */
+@keyframes flicker {
+  0%, 93%, 95%, 97%, 100% { opacity: 1; }
+  94%, 96% { opacity: 0.85; }
+}
+
+/* Expand panel slide-in */
+@keyframes expandIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Horizontal progress bar fill */
+@keyframes fillBar {
+  from { width: 0; }
+  to   { width: var(--fill-w, 100%); }
+}
+
+/* Classes using animations */
+.animate-blink       { animation: blink 1.2s step-end infinite; }
+.animate-status      { animation: statusPulse 2s ease-in-out infinite; }
+.animate-scan-sweep  { animation: scanSweep 6s linear infinite; }
+.animate-flicker     { animation: flicker 8s ease-in-out infinite; }
+.animate-expand-in   { animation: expandIn 0.2s ease-out forwards; }
+
+.tier-sp-glow { animation: spGlow 2.4s ease-in-out infinite; }
+.tier-s-glow  { animation: sGlow  3s   ease-in-out infinite; }
+
+/* Hover glow for lower tiers (non-animated) */
+.hd-card-wrapper:hover .hd-card { opacity: 1; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a10; }
+::-webkit-scrollbar-thumb { background: #FFD700; }
+::-webkit-scrollbar-thumb:hover { background: #FFC107; }
+
+/* ── Selection ── */
+::selection { background: rgba(255, 215, 0, 0.25); }
